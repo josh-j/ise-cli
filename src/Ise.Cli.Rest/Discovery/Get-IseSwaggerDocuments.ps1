@@ -8,7 +8,7 @@ function Get-IseSwaggerDocuments {
     )
 
     $cacheKey = 'Rest.Swagger.Documents'
-    if ($Refresh) { $Session.DatasourceState.Remove($cacheKey) }
+    if ($Refresh) { $null = $Session.DatasourceState.Remove($cacheKey) }
     if ($Session.DatasourceState.ContainsKey($cacheKey)) {
         return @($Session.DatasourceState[$cacheKey])
     }
@@ -18,14 +18,18 @@ function Get-IseSwaggerDocuments {
         -Target 'SwaggerResources'
     $documents = foreach ($group in @($index.BodyObject)) {
         if (-not $group.location) { continue }
+        $location = [string]$group.location
+        if ($location -match '^/v\d+/api-docs(?:\?|$)') {
+            $location = '/api' + $location
+        }
         try {
-            $response = Send-IseRestRequest -Session $Session -Path ([string]$group.location) `
+            $response = Send-IseRestRequest -Session $Session -Path $location `
                 -Correlation $Correlation -Datasource $Datasource -Operation Discover `
                 -Target ([string]$group.name)
             if ($null -eq $response.BodyObject.paths) { continue }
             [pscustomobject]@{
                 Name     = [string]$group.name
-                Location = [string]$group.location
+                Location = $location
                 Document = $response.BodyObject
             }
         }

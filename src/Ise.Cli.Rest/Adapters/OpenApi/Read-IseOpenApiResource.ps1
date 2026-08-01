@@ -40,7 +40,11 @@ function Read-IseOpenApiResource {
         $effectiveQuery = @{}
         $pageResult = Resolve-IseOpenApiPage -Response $response -Descriptor $Descriptor -Page $page
         $fetched += @($pageResult.Items).Count
-        if ($Raw) { $response.BodyObject }
+        if ($Raw) {
+            $response.BodyObject
+            $emitted++
+            if ($First -gt 0 -and $emitted -ge $First) { return }
+        }
         else {
             foreach ($item in @($pageResult.Items)) {
                 if ($null -eq $item) { continue }

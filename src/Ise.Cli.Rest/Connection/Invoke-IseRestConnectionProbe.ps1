@@ -5,13 +5,15 @@ function Invoke-IseRestConnectionProbe {
         [Parameter(Mandatory)] [string] $Source,
         [Parameter(Mandatory)] [string] $Path,
         [hashtable] $Query,
+        [string] $Accept = 'application/json',
         [switch] $DetectVersion,
         $Correlation
     )
 
     try {
         $response = Send-IseRestRequest -Session $Session -Path $Path -Query $Query `
-            -Correlation $Correlation -Datasource $Source -Operation Connect -Target Probe
+            -Correlation $Correlation -Datasource $Source -Operation Connect -Target Probe `
+            -Accept $Accept
         $Session.Capabilities[$Source] = $true
         $Session.DatasourceState['Connection.HttpReachable'] = $true
         $Session.DatasourceState["Connection.Probe.$Source"] = [pscustomobject]@{

@@ -22,7 +22,7 @@ Describe 'Open API adapter' {
     It 'discovers live GET operations and follows Open API nextPage links' {
         $routes = @{
             '/api/swagger-resources' = @{ Body = @(
-                @{ name = 'Deployment'; location = '/api/v3/api-docs?group=Deployment' }
+                @{ name = 'Deployment'; location = '/v3/api-docs?group=Deployment' }
             ) | ConvertTo-Json -Depth 5 -Compress }
             '/api/v3/api-docs?group=Deployment' = @{ Body = @{
                 paths = @{

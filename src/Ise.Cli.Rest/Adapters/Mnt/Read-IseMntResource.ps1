@@ -19,7 +19,7 @@ function Read-IseMntResource {
     } else { $Descriptor.CollectionPath }
     $response = Send-IseRestRequest -Session $Session -Path $requestPath -Query $Query `
         -Headers $Headers -Correlation $Correlation -Datasource 'Rest.Mnt' `
-        -Operation 'Enumerate' -Target $Descriptor.Name -Page 1
+        -Operation 'Enumerate' -Target $Descriptor.Name -Accept 'application/xml' -Page 1
     if ($Raw) { $response.BodyObject; return }
     $pageResult = Resolve-IseMntPage -Response $response -Descriptor $Descriptor -Page 1
     $emitted = 0

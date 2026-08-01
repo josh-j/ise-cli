@@ -10,14 +10,11 @@ function New-IseHttpClient {
     $handler.Credentials = $Credential.GetNetworkCredential()
     $handler.PreAuthenticate = $true
     if ($SkipCertificateCheck) {
-        $handler.ServerCertificateCustomValidationCallback = {
-            param($message, $certificate, $chain, $errors)
-            $true
-        }
+        $handler.ServerCertificateCustomValidationCallback =
+            [System.Net.Http.HttpClientHandler]::DangerousAcceptAnyServerCertificateValidator
     }
     $client = [System.Net.Http.HttpClient]::new($handler, $true)
     $client.Timeout = [timespan]::FromSeconds($TimeoutSec)
-    $client.DefaultRequestHeaders.Accept.ParseAdd('application/json')
     $client.DefaultRequestHeaders.UserAgent.ParseAdd('ise-cli/0.1.0')
     $client
 }

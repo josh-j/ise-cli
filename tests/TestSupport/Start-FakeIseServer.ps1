@@ -2,9 +2,20 @@ function Start-FakeIseServer {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [hashtable] $Routes,
-        [int] $Port = (Get-Random -Minimum 20000 -Maximum 50000)
+        [int] $Port
     )
 
+    if ($Port -le 0) {
+        $portReservation = [System.Net.Sockets.TcpListener]::new(
+            [System.Net.IPAddress]::Loopback,
+            0
+        )
+        try {
+            $portReservation.Start()
+            $Port = ([System.Net.IPEndPoint]$portReservation.LocalEndpoint).Port
+        }
+        finally { $portReservation.Stop() }
+    }
     $prefix = "http://127.0.0.1:$Port/"
     $job = Start-ThreadJob -ArgumentList $prefix, $Routes -ScriptBlock {
         param($Prefix, $Routes)
@@ -29,9 +40,18 @@ function Start-FakeIseServer {
                     $response.StatusCode = 404
                     $response.ContentType = 'application/json'
                     $body = '{"error":"not_found"}'
+                } elseif ($route.ExpectedAccept -and
+                    $request.AcceptTypes -notcontains [string]$route.ExpectedAccept) {
+                    $response.StatusCode = 406
+                    $response.ContentType = 'application/json'
+                    $body = '{"error":"unsupported_accept"}'
                 } else {
                     $response.StatusCode = if ($route.StatusCode) { $route.StatusCode } else { 200 }
-                    $response.ContentType = if ($route.ContentType) { $route.ContentType } else { 'application/json' }
+                    if (-not $route.OmitContentType) {
+                        $response.ContentType = if ($route.ContentType) {
+                            $route.ContentType
+                        } else { 'application/json' }
+                    }
                     $body = [string]$route.Body
                 }
                 $bytes = [Text.Encoding]::UTF8.GetBytes($body)
@@ -47,7 +67,7 @@ function Start-FakeIseServer {
     }
 
     $ready = $false
-    for ($attempt = 0; $attempt -lt 100; $attempt++) {
+    for ($attempt = 0; $attempt -lt 250; $attempt++) {
         if ($job.State -in @('Failed', 'Completed', 'Stopped')) { break }
         $output = @(Receive-Job -Job $job -Keep)
         if ($output -contains 'READY') { $ready = $true; break }

@@ -45,7 +45,7 @@ Describe 'REST resource discovery' {
         $server = Start-FakeIseServer -Routes $routes
         Connect-Ise $server.Uri $credential -InformationAction SilentlyContinue | Out-Null
 
-        $schema = @(Get-IseRestSchema -Ers Endpoint, CustomWidget `
+        $schema = @(Get-IseRestSchema -Ers Endpoint, CustomWidget -Refresh `
             -InformationAction SilentlyContinue)
         $schema.Count | Should -Be 2
         @($schema | Where-Object SchemaSource -EQ Live).Count | Should -Be 2

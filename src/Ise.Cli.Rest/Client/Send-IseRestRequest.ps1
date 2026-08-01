@@ -9,6 +9,7 @@ function Send-IseRestRequest {
         [string] $Datasource,
         [string] $Operation = 'Get',
         [string] $Target,
+        [string] $Accept = 'application/json',
         [Nullable[int]] $Page
     )
 
@@ -25,6 +26,14 @@ function Send-IseRestRequest {
     $request.Headers.Authorization = [System.Net.Http.Headers.AuthenticationHeaderValue]::new(
         'Basic', $token
     )
+    $callerSpecifiedAccept = $Headers -and @($Headers.Keys | Where-Object {
+        [string]$_ -ieq 'Accept'
+    }).Count -gt 0
+    if (-not $callerSpecifiedAccept) {
+        $request.Headers.Accept.Add(
+            [System.Net.Http.Headers.MediaTypeWithQualityHeaderValue]::new($Accept)
+        )
+    }
     if ($Headers) {
         foreach ($name in @($Headers.Keys)) {
             if ($name -ieq 'Authorization') { continue }
@@ -41,7 +50,8 @@ function Send-IseRestRequest {
     try {
         $response = $Session.HttpClient.SendAsync($request).GetAwaiter().GetResult()
         $bodyBytes = $response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult()
-        $charset = [string]$response.Content.Headers.ContentType.CharSet
+        $contentTypeHeader = $response.Content.Headers.ContentType
+        $charset = if ($contentTypeHeader) { [string]$contentTypeHeader.CharSet } else { $null }
         $encoding = if ($charset) {
             try { [System.Text.Encoding]::GetEncoding($charset.Trim('"')) }
             catch { [System.Text.Encoding]::UTF8 }
@@ -51,7 +61,7 @@ function Send-IseRestRequest {
         $responseHeaders = @{}
         foreach ($header in $response.Headers) { $responseHeaders[$header.Key] = @($header.Value) }
         foreach ($header in $response.Content.Headers) { $responseHeaders[$header.Key] = @($header.Value) }
-        $contentType = [string]$response.Content.Headers.ContentType
+        $contentType = [string]$contentTypeHeader
         $context = @{
             Datasource    = $Datasource
             Operation     = $Operation

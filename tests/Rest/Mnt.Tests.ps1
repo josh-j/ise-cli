@@ -30,7 +30,9 @@ Describe 'MnT adapter' {
 '@
         $routes = @{
             '/admin/API/mnt/Session/ActiveList' = @{
-                ContentType = 'application/xml'; Body = $xml
+                ContentType = 'application/xml'
+                ExpectedAccept = 'application/xml'
+                Body = $xml
             }
         }
         $server = Start-FakeIseServer -Routes $routes

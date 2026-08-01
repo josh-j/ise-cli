@@ -44,6 +44,60 @@ Describe 'Get-IseRest' {
         $raw[0].SearchResult.total | Should -Be 1
     }
 
+    It 'honors First by stopping raw output after the first envelope' {
+        $routes = @{
+            '/ers/config/endpoint' = @{ Body = @{
+                SearchResult = @{
+                    total = 2
+                    resources = @(@{ id = '1' })
+                    nextPage = @{ href = '/ers/config/endpoint?page=2' }
+                }
+            } | ConvertTo-Json -Depth 8 -Compress }
+            '/ers/config/endpoint?page=2' = @{
+                StatusCode = 500
+                Body = '{"error":"should_not_be_requested"}'
+            }
+        }
+        $server = Start-FakeIseServer -Routes $routes
+        Connect-Ise $server.Uri (New-TestCredential) -InformationAction SilentlyContinue |
+            Out-Null
+
+        $raw = @(Get-IseRest -Ers Endpoint -Raw -First 1 `
+            -InformationAction SilentlyContinue)
+        $raw.Count | Should -Be 1
+        $raw[0].SearchResult.resources[0].id | Should -Be '1'
+    }
+
+    It 'requests ISE-supported JSON and XML response media types' {
+        $routes = @{
+            '/ers/config/endpoint' = @{
+                ExpectedAccept = 'application/json'
+                Body = '{"SearchResult":{"total":0,"resources":[]}}'
+            }
+        }
+        $server = Start-FakeIseServer -Routes $routes
+        Connect-Ise $server.Uri (New-TestCredential) -InformationAction SilentlyContinue |
+            Out-Null
+
+        { Get-IseRest -Ers Endpoint -InformationAction SilentlyContinue } |
+            Should -Not -Throw
+    }
+
+    It 'parses JSON when ISE omits the Content-Type response header' {
+        $routes = @{
+            '/ers/config/endpoint' = @{
+                OmitContentType = $true
+                Body = '{"SearchResult":{"total":1,"resources":[{"id":"no-content-type"}]}}'
+            }
+        }
+        $server = Start-FakeIseServer -Routes $routes
+        Connect-Ise $server.Uri (New-TestCredential) -InformationAction SilentlyContinue |
+            Out-Null
+
+        $row = Get-IseRest -Ers Endpoint -InformationAction SilentlyContinue
+        $row.id | Should -Be 'no-content-type'
+    }
+
     It 'encodes repeated query values' {
         $routes = @{
             '/ers/config/endpoint?filter=a&filter=b' = @{ Body = @{

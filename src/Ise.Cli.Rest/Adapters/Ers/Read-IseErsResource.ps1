@@ -37,6 +37,8 @@ function Read-IseErsResource {
         if ($Raw) {
             $response.BodyObject
             $pageResult = Resolve-IseErsPage -Response $response -Descriptor $Descriptor -Page $page
+            $emitted++
+            if ($First -gt 0 -and $emitted -ge $First) { return }
         } else {
             $pageResult = Resolve-IseErsPage -Response $response -Descriptor $Descriptor -Page $page
             foreach ($item in @($pageResult.Items)) {

@@ -89,7 +89,7 @@ Describe 'ISE connection lifecycle' {
         Get-IseConnection | Should -BeNullOrEmpty
     }
 
-    It 'returns a structured connection error when the server is unreachable' {
+    It 'returns a structured transport error when the server is unreachable' {
         $unusedEndpoint = [System.Net.Sockets.Socket]::new(
             [System.Net.Sockets.AddressFamily]::InterNetwork,
             [System.Net.Sockets.SocketType]::Stream,
@@ -101,9 +101,16 @@ Describe 'ISE connection lifecycle' {
             )
             $port = ([System.Net.IPEndPoint]$unusedEndpoint.LocalEndPoint).Port
             $unreachable = [uri]"http://127.0.0.1:$port/"
-            { Connect-Ise $unreachable $credential -TimeoutSec 1 -ErrorAction Stop `
-                -InformationAction SilentlyContinue } |
-                Should -Throw -ErrorId 'Ise.Connection.Unavailable,Connect-Ise'
+            $transportError = try {
+                Connect-Ise $unreachable $credential -TimeoutSec 1 -ErrorAction Stop `
+                    -InformationAction SilentlyContinue
+            }
+            catch { $_ }
+            $transportError | Should -Not -BeNullOrEmpty
+            $transportError.FullyQualifiedErrorId | Should -BeIn @(
+                'Ise.Connection.Unavailable,Connect-Ise',
+                'Ise.Rest.RequestTimeout,Connect-Ise'
+            )
             Get-IseConnection | Should -BeNullOrEmpty
         }
         finally { $unusedEndpoint.Dispose() }

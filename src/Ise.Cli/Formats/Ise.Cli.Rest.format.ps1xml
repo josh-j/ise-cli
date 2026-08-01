@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>IseRestResourceDescriptor</Name>
+      <ViewSelectedBy><TypeName>Ise.Rest.ResourceDescriptor</TypeName></ViewSelectedBy>
+      <TableControl><TableHeaders>
+        <TableColumnHeader><Label>Api</Label></TableColumnHeader>
+        <TableColumnHeader><Label>Name</Label></TableColumnHeader>
+        <TableColumnHeader><Label>CollectionPath</Label></TableColumnHeader>
+        <TableColumnHeader><Label>SchemaSource</Label></TableColumnHeader>
+      </TableHeaders><TableRowEntries><TableRowEntry><TableColumnItems>
+        <TableColumnItem><PropertyName>Api</PropertyName></TableColumnItem>
+        <TableColumnItem><PropertyName>Name</PropertyName></TableColumnItem>
+        <TableColumnItem><PropertyName>CollectionPath</PropertyName></TableColumnItem>
+        <TableColumnItem><PropertyName>SchemaSource</PropertyName></TableColumnItem>
+      </TableColumnItems></TableRowEntry></TableRowEntries></TableControl>
+    </View>
+    <View>
+      <Name>IseRestErsEndpoint</Name>
+      <ViewSelectedBy><TypeName>Ise.Rest.Ers.Endpoint</TypeName></ViewSelectedBy>
+      <TableControl><TableHeaders>
+        <TableColumnHeader><Label>id</Label></TableColumnHeader>
+        <TableColumnHeader><Label>name</Label></TableColumnHeader>
+        <TableColumnHeader><Label>description</Label></TableColumnHeader>
+      </TableHeaders><TableRowEntries><TableRowEntry><TableColumnItems>
+        <TableColumnItem><PropertyName>id</PropertyName></TableColumnItem>
+        <TableColumnItem><PropertyName>name</PropertyName></TableColumnItem>
+        <TableColumnItem><PropertyName>description</PropertyName></TableColumnItem>
+      </TableColumnItems></TableRowEntry></TableRowEntries></TableControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>

@@ -1,0 +1,9 @@
+{
+  "SearchResult": {
+    "total": 2,
+    "resources": [
+      { "id": "endpoint-1", "name": "phone-1", "unknownField": "preserved" }
+    ],
+    "nextPage": { "href": "/ers/config/endpoint?page=2" }
+  }
+}

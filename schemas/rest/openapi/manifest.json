@@ -1,0 +1,32 @@
+{
+  "api": "OpenApi",
+  "resources": [
+    {
+      "name": "DeploymentNode",
+      "collectionPath": "/api/v1/deployment/node",
+      "detailPathTemplate": null,
+      "canEnumerate": true,
+      "canGetById": false,
+      "paginationStrategy": "OpenApi",
+      "itemTypeName": "Ise.Rest.OpenApi.DeploymentNode"
+    },
+    {
+      "name": "Patch",
+      "collectionPath": "/api/v1/patch",
+      "detailPathTemplate": null,
+      "canEnumerate": true,
+      "canGetById": false,
+      "paginationStrategy": "Single",
+      "itemTypeName": "Ise.Rest.OpenApi.Patch"
+    },
+    {
+      "name": "DeviceAdminPolicySet",
+      "collectionPath": "/api/v1/policy/device-admin/policy-set",
+      "detailPathTemplate": null,
+      "canEnumerate": true,
+      "canGetById": false,
+      "paginationStrategy": "OpenApi",
+      "itemTypeName": "Ise.Rest.OpenApi.DeviceAdminPolicySet"
+    }
+  ]
+}

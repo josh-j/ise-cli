@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Session",
+    "service": "com.cisco.ise.session",
+    "snapshotPaths": ["getSessions"],
+    "topicProperties": ["sessionTopic", "sessionTopicBulk"]
+  },
+  {
+    "name": "TrustSecConfiguration",
+    "service": "com.cisco.ise.config.trustsec",
+    "snapshotPaths": ["getSecurityGroups", "getSecurityGroupAcls", "getEgressMatrices"],
+    "topicProperties": ["securityGroupTopic", "securityGroupAclTopic", "egressMatrixTopic"]
+  },
+  {
+    "name": "AdaptiveNetworkControl",
+    "service": "com.cisco.ise.config.anc",
+    "snapshotPaths": ["getPolicies", "getEndpoints"],
+    "topicProperties": ["ancTopic"]
+  },
+  {
+    "name": "EndpointAsset",
+    "service": "com.cisco.endpoint.asset",
+    "snapshotPaths": ["getAssets"],
+    "topicProperties": ["assetTopic"]
+  },
+  {
+    "name": "MDM",
+    "service": "com.cisco.ise.mdm",
+    "snapshotPaths": ["getEndpoints"],
+    "topicProperties": ["endpointTopic"]
+  }
+]

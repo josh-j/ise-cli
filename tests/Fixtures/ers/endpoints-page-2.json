@@ -1,0 +1,8 @@
+{
+  "SearchResult": {
+    "total": 2,
+    "resources": [
+      { "id": "endpoint-2", "name": "workstation-1" }
+    ]
+  }
+}

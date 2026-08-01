@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>IseConnection</Name>
+      <ViewSelectedBy><TypeName>Ise.Connection</TypeName></ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader><Label>Server</Label></TableColumnHeader>
+          <TableColumnHeader><Label>ConnectedAt</Label></TableColumnHeader>
+          <TableColumnHeader><Label>ConnectionId</Label></TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries><TableRowEntry><TableColumnItems>
+          <TableColumnItem><PropertyName>Server</PropertyName></TableColumnItem>
+          <TableColumnItem><PropertyName>ConnectedAt</PropertyName></TableColumnItem>
+          <TableColumnItem><PropertyName>ConnectionId</PropertyName></TableColumnItem>
+        </TableColumnItems></TableRowEntry></TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>IseTraceConfiguration</Name>
+      <ViewSelectedBy><TypeName>Ise.TraceConfiguration</TypeName></ViewSelectedBy>
+      <TableControl><TableHeaders>
+        <TableColumnHeader><Label>Type</Label></TableColumnHeader>
+        <TableColumnHeader><Label>Level</Label></TableColumnHeader>
+        <TableColumnHeader><Label>Path</Label></TableColumnHeader>
+        <TableColumnHeader><Label>Disabled</Label></TableColumnHeader>
+      </TableHeaders><TableRowEntries><TableRowEntry><TableColumnItems>
+        <TableColumnItem><PropertyName>Type</PropertyName></TableColumnItem>
+        <TableColumnItem><PropertyName>Level</PropertyName></TableColumnItem>
+        <TableColumnItem><PropertyName>Path</PropertyName></TableColumnItem>
+        <TableColumnItem><PropertyName>Disabled</PropertyName></TableColumnItem>
+      </TableColumnItems></TableRowEntry></TableRowEntries></TableControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>

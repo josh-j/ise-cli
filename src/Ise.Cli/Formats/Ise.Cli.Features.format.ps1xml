@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>IseContextVisibility</Name>
+      <ViewSelectedBy><TypeName>Ise.Feature.ContextVisibility</TypeName></ViewSelectedBy>
+      <ListControl><ListEntries><ListEntry><ListItems>
+        <ListItem><PropertyName>Identity</PropertyName></ListItem>
+        <ListItem><PropertyName>Endpoint</PropertyName></ListItem>
+        <ListItem><PropertyName>LastAuthentication</PropertyName></ListItem>
+        <ListItem><PropertyName>CurrentSessions</PropertyName></ListItem>
+        <ListItem><PropertyName>Sources</PropertyName></ListItem>
+        <ListItem><PropertyName>MissingCapabilities</PropertyName></ListItem>
+        <ListItem><PropertyName>CorrelationId</PropertyName></ListItem>
+      </ListItems></ListEntry></ListEntries></ListControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>

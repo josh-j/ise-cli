@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activeList xmlns="http://www.cisco.com/ise/mnt">
+  <activeSession><calling_station_id>AA:BB:CC:DD:EE:FF</calling_station_id><user_name>alice</user_name></activeSession>
+</activeList>

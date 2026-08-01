@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>IseDataConnectViewDescriptor</Name>
+      <ViewSelectedBy><TypeName>Ise.DataConnect.ViewDescriptor</TypeName></ViewSelectedBy>
+      <TableControl><TableHeaders>
+        <TableColumnHeader><Label>Owner</Label></TableColumnHeader>
+        <TableColumnHeader><Label>Name</Label></TableColumnHeader>
+        <TableColumnHeader><Label>Columns</Label></TableColumnHeader>
+        <TableColumnHeader><Label>SchemaSource</Label></TableColumnHeader>
+      </TableHeaders><TableRowEntries><TableRowEntry><TableColumnItems>
+        <TableColumnItem><PropertyName>Owner</PropertyName></TableColumnItem>
+        <TableColumnItem><PropertyName>Name</PropertyName></TableColumnItem>
+        <TableColumnItem><ScriptBlock>$_.Columns.Count</ScriptBlock></TableColumnItem>
+        <TableColumnItem><PropertyName>SchemaSource</PropertyName></TableColumnItem>
+      </TableColumnItems></TableRowEntry></TableRowEntries></TableControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>

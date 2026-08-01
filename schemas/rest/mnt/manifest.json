@@ -1,0 +1,25 @@
+{
+  "api": "Mnt",
+  "resources": [
+    {
+      "name": "ActiveSession",
+      "collectionPath": "/admin/API/mnt/Session/ActiveList",
+      "detailPathTemplate": null,
+      "canEnumerate": true,
+      "canGetById": false,
+      "paginationStrategy": "Single",
+      "itemTypeName": "Ise.Rest.Mnt.ActiveSession",
+      "requiredParameters": []
+    },
+    {
+      "name": "SessionByMac",
+      "collectionPath": "/admin/API/mnt/Session/MACAddress/{mac}",
+      "detailPathTemplate": "/admin/API/mnt/Session/MACAddress/{id}",
+      "canEnumerate": false,
+      "canGetById": true,
+      "paginationStrategy": "Single",
+      "itemTypeName": "Ise.Rest.Mnt.Session",
+      "requiredParameters": ["mac"]
+    }
+  ]
+}

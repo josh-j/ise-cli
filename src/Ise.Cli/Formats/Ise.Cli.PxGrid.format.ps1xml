@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>IsePxGridServiceDescriptor</Name>
+      <ViewSelectedBy><TypeName>Ise.PxGrid.ServiceDescriptor</TypeName></ViewSelectedBy>
+      <TableControl><TableHeaders>
+        <TableColumnHeader><Label>Name</Label></TableColumnHeader>
+        <TableColumnHeader><Label>Service</Label></TableColumnHeader>
+        <TableColumnHeader><Label>NodeName</Label></TableColumnHeader>
+        <TableColumnHeader><Label>Topics</Label></TableColumnHeader>
+      </TableHeaders><TableRowEntries><TableRowEntry><TableColumnItems>
+        <TableColumnItem><PropertyName>Name</PropertyName></TableColumnItem>
+        <TableColumnItem><PropertyName>Service</PropertyName></TableColumnItem>
+        <TableColumnItem><PropertyName>NodeName</PropertyName></TableColumnItem>
+        <TableColumnItem><ScriptBlock>$_.Topics -join ', '</ScriptBlock></TableColumnItem>
+      </TableColumnItems></TableRowEntry></TableRowEntries></TableControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>

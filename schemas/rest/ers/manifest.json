@@ -1,0 +1,105 @@
+{
+  "api": "Ers",
+  "resources": [
+    {
+      "name": "Endpoint",
+      "collectionPath": "/ers/config/endpoint",
+      "detailPathTemplate": "/ers/config/endpoint/{id}",
+      "canEnumerate": true,
+      "canGetById": true,
+      "paginationStrategy": "ErsSearchResult",
+      "collectionEnvelope": "SearchResult.resources",
+      "itemTypeName": "Ise.Rest.Ers.Endpoint"
+    },
+    {
+      "name": "NetworkDevice",
+      "collectionPath": "/ers/config/networkdevice",
+      "detailPathTemplate": "/ers/config/networkdevice/{id}",
+      "canEnumerate": true,
+      "canGetById": true,
+      "paginationStrategy": "ErsSearchResult",
+      "collectionEnvelope": "SearchResult.resources",
+      "itemTypeName": "Ise.Rest.Ers.NetworkDevice"
+    },
+    {
+      "name": "InternalUser",
+      "collectionPath": "/ers/config/internaluser",
+      "detailPathTemplate": "/ers/config/internaluser/{id}",
+      "canEnumerate": true,
+      "canGetById": true,
+      "paginationStrategy": "ErsSearchResult",
+      "collectionEnvelope": "SearchResult.resources",
+      "itemTypeName": "Ise.Rest.Ers.InternalUser"
+    },
+    {
+      "name": "IdentityGroup",
+      "collectionPath": "/ers/config/identitygroup",
+      "detailPathTemplate": "/ers/config/identitygroup/{id}",
+      "canEnumerate": true,
+      "canGetById": true,
+      "paginationStrategy": "ErsSearchResult",
+      "collectionEnvelope": "SearchResult.resources",
+      "itemTypeName": "Ise.Rest.Ers.IdentityGroup"
+    },
+    {
+      "name": "EndpointGroup",
+      "collectionPath": "/ers/config/endpointgroup",
+      "detailPathTemplate": "/ers/config/endpointgroup/{id}",
+      "canEnumerate": true,
+      "canGetById": true,
+      "paginationStrategy": "ErsSearchResult",
+      "collectionEnvelope": "SearchResult.resources",
+      "itemTypeName": "Ise.Rest.Ers.EndpointGroup"
+    },
+    {
+      "name": "NetworkDeviceGroup",
+      "collectionPath": "/ers/config/networkdevicegroup",
+      "detailPathTemplate": "/ers/config/networkdevicegroup/{id}",
+      "canEnumerate": true,
+      "canGetById": true,
+      "paginationStrategy": "ErsSearchResult",
+      "collectionEnvelope": "SearchResult.resources",
+      "itemTypeName": "Ise.Rest.Ers.NetworkDeviceGroup"
+    },
+    {
+      "name": "AuthorizationProfile",
+      "collectionPath": "/ers/config/authorizationprofile",
+      "detailPathTemplate": "/ers/config/authorizationprofile/{id}",
+      "canEnumerate": true,
+      "canGetById": true,
+      "paginationStrategy": "ErsSearchResult",
+      "collectionEnvelope": "SearchResult.resources",
+      "itemTypeName": "Ise.Rest.Ers.AuthorizationProfile"
+    },
+    {
+      "name": "DownloadableAcl",
+      "collectionPath": "/ers/config/downloadableacl",
+      "detailPathTemplate": "/ers/config/downloadableacl/{id}",
+      "canEnumerate": true,
+      "canGetById": true,
+      "paginationStrategy": "ErsSearchResult",
+      "collectionEnvelope": "SearchResult.resources",
+      "itemTypeName": "Ise.Rest.Ers.DownloadableAcl"
+    },
+    {
+      "name": "SecurityGroupTag",
+      "collectionPath": "/ers/config/sgt",
+      "detailPathTemplate": "/ers/config/sgt/{id}",
+      "canEnumerate": true,
+      "canGetById": true,
+      "paginationStrategy": "ErsSearchResult",
+      "collectionEnvelope": "SearchResult.resources",
+      "itemTypeName": "Ise.Rest.Ers.SecurityGroupTag"
+    },
+    {
+      "name": "SecurityGroupAcl",
+      "collectionPath": "/ers/config/sgacl",
+      "detailPathTemplate": "/ers/config/sgacl/{id}",
+      "canEnumerate": true,
+      "canGetById": true,
+      "paginationStrategy": "ErsSearchResult",
+      "collectionEnvelope": "SearchResult.resources",
+      "itemTypeName": "Ise.Rest.Ers.SecurityGroupAcl"
+    }
+  ]
+}

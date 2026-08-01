@@ -1,0 +1,3 @@
+[
+  { "name": "deployment", "location": "/api/v1/deployment/openapi.json" }
+]

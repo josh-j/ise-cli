@@ -503,7 +503,9 @@ Minimum contract scenarios:
 - [x] Add PSScriptAnalyzer with repository-owned settings.
 - [x] Validate the module manifest and exported-command list during every test run.
 - [x] Run source, staged-package, fresh-process, and clean-install validation on Linux.
-- [ ] Run the configured compatibility workflow on GitHub-hosted Windows after the project has a GitHub repository.
+- [x] Run the configured compatibility workflow on GitHub-hosted Windows after
+  the project has a GitHub repository. GitHub Actions run `30693684827` passed
+  on both Ubuntu and Windows for commit `24aac49`.
 - [x] Publish test results and the staged module as CI artifacts.
 
 The normal local validation sequence should be:
@@ -555,11 +557,19 @@ Completion gate: every request and error can be traced from command correlation 
 #### Phase 5: release readiness
 
 - [x] Capture representative ISE REST fixtures.
-- [ ] Run optional live tests after an ISE lab is explicitly configured through `ISE_TEST_*` environment variables.
+- [x] Run optional live tests after an ISE lab is explicitly configured through
+  `ISE_TEST_*` environment variables. Read-only experiment runs exercised ERS
+  and MnT and exposed the Open API Swagger-path compatibility fix; subsequent
+  verification was unavailable because the experiment health endpoint returned
+  HTTP 502 and the ISE target timed out.
 - [x] Document every public command and error contract.
 - [x] Classify Windows execution as compatibility evidence rather than a Linux release gate.
 
-Completion gate: the staged artifact passes the full test suite and can crawl each available REST family on the live lab without code changes.
+Completion gate: the staged artifact passes the full test suite, and every REST
+family passes its end-to-end fake-server contract. Live experiment runs are
+supplemental compatibility evidence only: they must remain read-only, must not
+control the experiment lifecycle, and do not block a release when the experiment
+itself is unavailable.
 
 ## Project architecture
 

@@ -90,13 +90,23 @@ Describe 'ISE connection lifecycle' {
     }
 
     It 'returns a structured connection error when the server is unreachable' {
-        $unreachable = $server.Uri
-        Stop-FakeIseServer $server
-        $server = $null
-        { Connect-Ise $unreachable $credential -TimeoutSec 1 -ErrorAction Stop `
-            -InformationAction SilentlyContinue } |
-            Should -Throw -ErrorId 'Ise.Connection.Unavailable,Connect-Ise'
-        Get-IseConnection | Should -BeNullOrEmpty
+        $unusedEndpoint = [System.Net.Sockets.Socket]::new(
+            [System.Net.Sockets.AddressFamily]::InterNetwork,
+            [System.Net.Sockets.SocketType]::Stream,
+            [System.Net.Sockets.ProtocolType]::Tcp
+        )
+        try {
+            $unusedEndpoint.Bind(
+                [System.Net.IPEndPoint]::new([System.Net.IPAddress]::Loopback, 0)
+            )
+            $port = ([System.Net.IPEndPoint]$unusedEndpoint.LocalEndPoint).Port
+            $unreachable = [uri]"http://127.0.0.1:$port/"
+            { Connect-Ise $unreachable $credential -TimeoutSec 1 -ErrorAction Stop `
+                -InformationAction SilentlyContinue } |
+                Should -Throw -ErrorId 'Ise.Connection.Unavailable,Connect-Ise'
+            Get-IseConnection | Should -BeNullOrEmpty
+        }
+        finally { $unusedEndpoint.Dispose() }
     }
 
     It 'routes adapter-declared connection parameters without Core protocol branches' {

@@ -123,6 +123,21 @@ Describe 'ISE connection lifecycle' {
         $module = Get-Module Ise.Cli
         $config = & $module { $script:IseSession.DatasourceState['DataConnect.Config'] }
         $config.ConnectionString | Should -Be 'Data Source=ise-reporting'
+        [object]::ReferenceEquals($config.Credential, $credential) | Should -BeTrue
         $config.Provider | Should -Be 'Oracle.ManagedDataAccess.Client'
+    }
+
+    It 'allows a distinct Data Connect credential to override the shared credential' {
+        $databaseCredential = [pscredential]::new(
+            'database-user',
+            (ConvertTo-SecureString 'database-password' -AsPlainText -Force)
+        )
+        Connect-Ise $server.Uri $credential `
+            -DataConnectConnectionString 'Data Source=ise-reporting' `
+            -DataConnectCredential $databaseCredential `
+            -InformationAction SilentlyContinue | Out-Null
+        $module = Get-Module Ise.Cli
+        $config = & $module { $script:IseSession.DatasourceState['DataConnect.Config'] }
+        [object]::ReferenceEquals($config.Credential, $databaseCredential) | Should -BeTrue
     }
 }

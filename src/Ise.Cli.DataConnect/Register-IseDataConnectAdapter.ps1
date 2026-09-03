@@ -13,7 +13,8 @@ function Register-IseDataConnectAdapter {
             Provider = 'Oracle.ManagedDataAccess.Client'
             ConnectionParameters = @(
                 @{ Name = 'DataConnectConnectionString'; ParameterType = [string] }
-                @{ Name = 'DataConnectCredential'; ParameterType = [pscredential] }
+                @{ Name = 'DataConnectCredential'; ParameterType = [pscredential]
+                   DefaultFrom = 'Credential' }
                 @{ Name = 'DataConnectProvider'; ParameterType = [string] }
                 @{ Name = 'DataConnectAssemblyPath'; ParameterType = [string] }
             )

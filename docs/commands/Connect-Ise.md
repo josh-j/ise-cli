@@ -22,12 +22,14 @@ Optional adapters are configured on the same connection:
 ```powershell
 Connect-Ise https://ise.example.net $credential `
     -DataConnectConnectionString $oracleConnectionString `
-    -DataConnectCredential (Get-Credential) `
     -PxGridControlUri https://ise.example.net:8910/pxgrid/control/ `
     -PxGridClientName ise-cli `
     -PxGridCertificatePath ./ise-cli.pfx `
     -PxGridCertificatePassword (Read-Host -AsSecureString)
 ```
+
+Data Connect reuses `-Credential` by default. When the reporting database has
+a different account, pass `-DataConnectCredential` to override it.
 
 `Get-IseConnection` returns a non-secret view of the current session.
 `Disconnect-Ise` closes Data Connect, pxGrid sockets, HTTP clients, and trace

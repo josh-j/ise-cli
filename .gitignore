@@ -1,3 +1,4 @@
 /out/*
 !/out/.gitkeep
 .mem-vocab/
+/ise-cli.profile.ps1

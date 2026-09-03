@@ -48,12 +48,8 @@ function Test-IseDataSourceDescriptor {
         }
     )
     if ($hasConnectionParameters) {
-        if ($Descriptor.PSObject.Properties.Name -notcontains 'Configure' -or
-            -not $Descriptor.Configure) {
-            throw [System.ArgumentException]::new(
-                "Datasource '$($Descriptor.Name)' declares connection parameters without a Configure hook."
-            )
-        }
+        $hasConfigure = $Descriptor.PSObject.Properties.Name -contains 'Configure' -and
+            $Descriptor.Configure
         $names = [System.Collections.Generic.HashSet[string]]::new(
             [System.StringComparer]::OrdinalIgnoreCase
         )
@@ -71,6 +67,18 @@ function Test-IseDataSourceDescriptor {
             if (-not $names.Add([string]$definition.Name)) {
                 throw [System.ArgumentException]::new(
                     "Datasource '$($Descriptor.Name)' repeats connection parameter '$($definition.Name)'."
+                )
+            }
+            $hasSessionStateKey = if ($definition -is [System.Collections.IDictionary]) {
+                $definition.Contains('SessionStateKey') -and $definition['SessionStateKey']
+            } else {
+                $definition.PSObject.Properties.Name -contains 'SessionStateKey' -and
+                    $definition.SessionStateKey
+            }
+            if (-not $hasConfigure -and -not $hasSessionStateKey) {
+                throw [System.ArgumentException]::new(
+                    "Datasource '$($Descriptor.Name)' connection parameter '$($definition.Name)' " +
+                    'has neither a Configure hook nor a SessionStateKey.'
                 )
             }
         }

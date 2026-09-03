@@ -45,6 +45,11 @@ function Start-FakeIseServer {
                     $response.StatusCode = 406
                     $response.ContentType = 'application/json'
                     $body = '{"error":"unsupported_accept"}'
+                } elseif ($route.ExpectedAuthorization -and
+                    $request.Headers['Authorization'] -ne [string]$route.ExpectedAuthorization) {
+                    $response.StatusCode = 401
+                    $response.ContentType = 'application/json'
+                    $body = '{"error":"unauthorized"}'
                 } else {
                     $response.StatusCode = if ($route.StatusCode) { $route.StatusCode } else { 200 }
                     if (-not $route.OmitContentType) {

@@ -7,6 +7,13 @@ function Register-IseMntAdapter {
         Capabilities = @('Discover', 'Enumerate', 'GetById', 'GetPath')
         Operations = @{ Discover = 'Get-IseMntCatalog'; Enumerate = 'Read-IseMntResource'
                         GetById = 'Read-IseMntResource'; GetPath = 'Read-IseMntResource' }
-        Open = 'Open-IseMntConnection'; Close = $null; Metadata = @{ ApiRoot = '/admin/API/mnt' }
+        Open = 'Open-IseMntConnection'; Close = $null
+        Metadata = @{
+            ApiRoot = '/admin/API/mnt'
+            ConnectionParameters = @(
+                @{ Name = 'MntCredential'; ParameterType = [pscredential]
+                   SessionStateKey = 'Credential.Rest.Mnt' }
+            )
+        }
     })
 }

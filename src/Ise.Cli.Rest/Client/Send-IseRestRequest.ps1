@@ -19,7 +19,11 @@ function Send-IseRestRequest {
         [System.Net.Http.HttpMethod]::Get,
         $uri
     )
-    $credential = $Session.Credential.GetNetworkCredential()
+    $credentialKey = "Credential.$Datasource"
+    $requestCredential = if ($Session.DatasourceState.ContainsKey($credentialKey)) {
+        [pscredential]$Session.DatasourceState[$credentialKey]
+    } else { $Session.Credential }
+    $credential = $requestCredential.GetNetworkCredential()
     $token = [Convert]::ToBase64String(
         [Text.Encoding]::UTF8.GetBytes("$($credential.UserName):$($credential.Password)")
     )

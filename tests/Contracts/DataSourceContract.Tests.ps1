@@ -31,6 +31,9 @@ Describe 'Datasource adapter contract' {
         $parameters = @(& $module { (New-IseConnectionDynamicParameters).Values })
         $parameters.Name | Should -Contain DataConnectConnectionString
         $parameters.Name | Should -Contain PxGridClientName
+        $parameters.Name | Should -Contain ErsCredential
+        $parameters.Name | Should -Contain MntCredential
+        $parameters.Name | Should -Contain OpenApiCredential
         ($parameters | Where-Object Name -EQ DataConnectCredential).ParameterType |
             Should -Be ([pscredential])
         ($parameters | Where-Object Name -EQ PxGridCertificatePassword).ParameterType |

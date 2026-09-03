@@ -9,6 +9,8 @@
 - Added live-catalog Data Connect queries with source-native output.
 - Reused the primary connection credential for Data Connect by default while
   retaining `-DataConnectCredential` as an override.
+- Added independent ERS, MnT, Open API, and Data Connect credentials plus a
+  gitignored local connection-profile workflow.
 - Added pxGrid 2.0 control discovery, snapshots, STOMP subscriptions, optional
   reconnect, and deterministic session cleanup.
 - Added semantic provider registration and `Get-IseContextVisibility` with

@@ -15,6 +15,12 @@ function Register-IseErsAdapter {
         }
         Open         = 'Open-IseErsConnection'
         Close        = $null
-        Metadata     = @{ ApiRoot = '/ers' }
+        Metadata     = @{
+            ApiRoot = '/ers'
+            ConnectionParameters = @(
+                @{ Name = 'ErsCredential'; ParameterType = [pscredential]
+                   SessionStateKey = 'Credential.Rest.Ers' }
+            )
+        }
     })
 }

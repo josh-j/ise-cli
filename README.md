@@ -41,6 +41,14 @@ Get-IsePxGrid Session
 Get-IseContextVisibility -MacAddress AA:BB:CC:DD:EE:FF
 ```
 
+For separate ERS, MnT, Open API, and Data Connect accounts, copy
+`ise-cli.profile.example.ps1` to the gitignored `ise-cli.profile.ps1`, fill in
+the connection values, and run the local profile:
+
+```powershell
+./ise-cli.profile.ps1
+```
+
 All commands are read-only. REST calls are always GET requests, Data Connect
 accepts only a single `SELECT`/`WITH` statement, and pxGrid exposes snapshots
 and subscriptions without mutation operations.

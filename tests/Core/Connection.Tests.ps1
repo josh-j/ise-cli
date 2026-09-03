@@ -140,4 +140,57 @@ Describe 'ISE connection lifecycle' {
         $config = & $module { $script:IseSession.DatasourceState['DataConnect.Config'] }
         [object]::ReferenceEquals($config.Credential, $databaseCredential) | Should -BeTrue
     }
+
+    It 'uses distinct credentials for each REST API family' {
+        Stop-FakeIseServer $server
+        $server = $null
+        $newCredential = {
+            param($name)
+            [pscredential]::new(
+                $name,
+                (ConvertTo-SecureString "$name-password" -AsPlainText -Force)
+            )
+        }
+        $authorization = {
+            param([pscredential] $value)
+            $network = $value.GetNetworkCredential()
+            $token = [Convert]::ToBase64String(
+                [Text.Encoding]::UTF8.GetBytes("$($network.UserName):$($network.Password)")
+            )
+            "Basic $token"
+        }
+        $ersCredential = & $newCredential ers-user
+        $mntCredential = & $newCredential mnt-user
+        $openApiCredential = & $newCredential openapi-user
+        $dataConnectCredential = & $newCredential dataconnect-user
+        $server = Start-FakeIseServer -Routes @{
+            '/ers/config/endpoint?size=1' = @{
+                Body = '{"SearchResult":{"total":0,"resources":[]}}'
+                ExpectedAuthorization = & $authorization $ersCredential
+            }
+            '/api/swagger-resources' = @{
+                Body = '[]'
+                ExpectedAuthorization = & $authorization $openApiCredential
+            }
+            '/admin/API/mnt/Version' = @{
+                ContentType = 'application/xml'
+                Body = '<versionInfo><version>3.3.0</version></versionInfo>'
+                ExpectedAuthorization = & $authorization $mntCredential
+            }
+        }
+
+        Connect-Ise $server.Uri $credential -ErsCredential $ersCredential `
+            -MntCredential $mntCredential -OpenApiCredential $openApiCredential `
+            -DataConnectConnectionString 'Data Source=ise-reporting' `
+            -DataConnectCredential $dataConnectCredential `
+            -InformationAction SilentlyContinue | Out-Null
+
+        $connection = Get-IseConnection
+        $connection.Capabilities['Rest.Ers'] | Should -BeTrue
+        $connection.Capabilities['Rest.Mnt'] | Should -BeTrue
+        $connection.Capabilities['Rest.OpenApi'] | Should -BeTrue
+        $module = Get-Module Ise.Cli
+        $configured = & $module { $script:IseSession.DatasourceState['DataConnect.Config'].Credential }
+        [object]::ReferenceEquals($configured, $dataConnectCredential) | Should -BeTrue
+    }
 }

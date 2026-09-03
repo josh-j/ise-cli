@@ -7,15 +7,21 @@ function Initialize-IseDataSourceConfiguration {
     )
 
     foreach ($descriptor in @($script:IseDataSources.Values)) {
-        if ($descriptor.PSObject.Properties.Name -notcontains 'Configure' -or
-            -not $descriptor.Configure) { continue }
+        if (-not $descriptor.Metadata) { continue }
+        $hasConnectionParameters = if ($descriptor.Metadata -is [System.Collections.IDictionary]) {
+            $descriptor.Metadata.Contains('ConnectionParameters')
+        } else {
+            $descriptor.Metadata.PSObject.Properties.Name -contains 'ConnectionParameters'
+        }
+        if (-not $hasConnectionParameters) { continue }
+        $definitions = @($descriptor.Metadata.ConnectionParameters)
         $arguments = @{}
-        foreach ($definition in @($descriptor.Metadata.ConnectionParameters)) {
+        foreach ($definition in $definitions) {
             $name = [string]$definition.Name
             if ($BoundParameters.ContainsKey($name)) { $arguments[$name] = $BoundParameters[$name] }
         }
         if ($arguments.Count) {
-            foreach ($definition in @($descriptor.Metadata.ConnectionParameters)) {
+            foreach ($definition in $definitions) {
                 $name = [string]$definition.Name
                 if ($arguments.ContainsKey($name)) { continue }
                 $defaultFrom = if ($definition -is [System.Collections.IDictionary] -and
@@ -28,8 +34,22 @@ function Initialize-IseDataSourceConfiguration {
                     $arguments[$name] = $BoundParameters[$defaultFrom]
                 }
             }
-            & $descriptor.Configure -Session $Session -Arguments $arguments `
-                -Correlation $Correlation
+            foreach ($definition in $definitions) {
+                $name = [string]$definition.Name
+                if (-not $arguments.ContainsKey($name)) { continue }
+                $stateKey = if ($definition -is [System.Collections.IDictionary] -and
+                    $definition.Contains('SessionStateKey')) {
+                    [string]$definition['SessionStateKey']
+                } elseif ($definition.PSObject.Properties.Name -contains 'SessionStateKey') {
+                    [string]$definition.SessionStateKey
+                }
+                if ($stateKey) { $Session.DatasourceState[$stateKey] = $arguments[$name] }
+            }
+            if ($descriptor.PSObject.Properties.Name -contains 'Configure' -and
+                $descriptor.Configure) {
+                & $descriptor.Configure -Session $Session -Arguments $arguments `
+                    -Correlation $Correlation
+            }
         }
     }
 }
